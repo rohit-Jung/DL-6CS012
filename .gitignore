@@ -2,3 +2,4 @@ msc/
 
 .venv/
 venv/
+__pycache__/
