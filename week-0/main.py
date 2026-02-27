@@ -1,3 +1,6 @@
+from tasks.numpy_exercise import matrix_operations, numpy_performance
+
+
 def main():
     print("Hello from week-0-worksheet!")
 
@@ -25,7 +28,18 @@ def main():
     # print(remove_element(nested, 2))
     # print(find_max(nested))
     # print(count_occurences(nested, 2))
-    print(deep_flatten(most_nested))
+    # print(deep_flatten(most_nested))
+
+    shape = (4, 2)
+    items = [1, 2, 3, 4]
+    val = 10
+    # array_creation(shape, int, val, items)
+    #
+    # array_manipulation()
+
+    # array_operation()
+    # matrix_operations()
+    numpy_performance()
 
 
 if __name__ == "__main__":
