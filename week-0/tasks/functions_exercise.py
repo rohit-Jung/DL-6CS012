@@ -207,4 +207,4 @@ def get_min(items: list[int]):
         if item < min:
             min = item
 
-    return max
+    return min
