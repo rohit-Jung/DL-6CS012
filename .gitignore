@@ -3,3 +3,4 @@ msc/
 .venv/
 venv/
 __pycache__/
+.ruff_*/
