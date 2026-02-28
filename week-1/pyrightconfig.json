@@ -1,0 +1,7 @@
+{
+  "venvPath": "/home/rokshh/.virtualenvs",
+  "venv": "neovim",
+  "pythonVersion": "3.10",
+  "typeCheckingMode": "basic",
+  "extraPaths": ["."]
+}
