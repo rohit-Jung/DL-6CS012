@@ -4,3 +4,5 @@ msc/
 venv/
 __pycache__/
 .ruff_*/
+*.md
+!README.md
