@@ -38,3 +38,4 @@
 - Unrelated groups get separate principal components, not one merged one.
 
 
+- We compute the covariance matrix to find eigenvectors (directions) and eigenvalues (their importance), then project the data onto the most important eigenvectors.
