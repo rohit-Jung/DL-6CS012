@@ -80,4 +80,34 @@ history = model.fit(
     validation_split=0.15,
     callbacks=callbacks,
 )
+
+# evaluate syntax
+model.evaluate(
+    x=None,
+    y=None,
+    batch_size=None,
+    verbose=1,
+    sample_weight=None,
+    steps=None,
+    callbacks =None,
+    max_queue_size=10,
+    workers=1,
+    use_multiprocessing=False
+)
+
+# save and load
+model.save('model_name.h5')
+loaded_model = tf.keras.models.load_model('model_name.h5')
+
+# predict 
+model.predict(
+    x,
+    batch_size=None,
+    verbose=0,
+    steps=None,
+    callbacks=None,
+    max_queue_size=10,
+    workers=1,
+    use_multiprocessing=False
+)
 ```
