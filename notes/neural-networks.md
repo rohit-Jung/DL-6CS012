@@ -15,3 +15,69 @@
 ## quantifying loss
 
 - loss functions are according to the dataset/problem ?
+
+## keras
+
+- why not use numpy
+  - numpy doesn't support differentiation
+  - numpy runs only on CPU and not on GPU
+  - keras has pre-built activation functions: sigmoid, relu
+  - keras support model training { with numpy, compute forward pass, loss, backward pass, gradients }
+  - keras has pre-built layers
+  - keras has pre-built optimizers like: SGD, Mini, Batch and Adam (Adaptive momentum Estimation)
+
+## Fully Connected Layers
+
+- every input node is connected to every node in next layer
+- this is called `Dense`layer in keras
+- ```py
+  from tensorflow.keras.layers import Dense
+  layer = Dense(units, activation=None, use_bias=True, kernel_initializer="glorot_uniform")
+  ```
+- each layer computes `y= activation(w @ x + b)`
+
+## some examples and syntax (using keras)
+
+### model optimizer
+
+```txt
+# syntax
+model.compile(
+    optimizer=<optimizer>,
+    loss=<loss_function>,
+    metrics=[<metric1>, <metric2>, ...]
+)
+
+model.fit(
+    x=<input_data>,
+    y=<target_labels>,
+    batch_size=<batch_size>,
+    epochs=<epochs>,
+    validation_data=(<x_val>, <y_val>),
+    validation_split=<validation_split>,
+    callbacks=[<callback1>, <callback2>, ...],
+    verbose=<verbose_level>
+)
+
+```
+
+### model.fit example
+
+```python
+batch_size = 128
+epochs = 2000
+# Callbacks
+callbacks = [
+    keras.callbacks.ModelCheckpoint(filepath="model_at_epoch_{epoch}.keras"),
+    keras.callbacks.EarlyStopping(monitor="val_loss", patience=4 ),
+]
+# Train the model with callbacks and validation split
+history = model.fit(
+    x_train,
+    y_train,
+    batch_size=batch_size,
+    epochs=epochs,
+    validation_split=0.15,
+    callbacks=callbacks,
+)
+```
