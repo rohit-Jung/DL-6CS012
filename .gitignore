@@ -8,3 +8,6 @@ __pycache__/
 !notes/*.md
 !README.md
 dataset/
+
+# do we need this idk
+model_checkpoints/
