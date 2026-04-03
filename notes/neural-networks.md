@@ -61,6 +61,9 @@ model.fit(
 
 ```
 
+- we use Softmax at last since it's a multiclass classification
+- we should reshape the size as we already defined the size to keras
+
 ### model.fit example
 
 ```python
