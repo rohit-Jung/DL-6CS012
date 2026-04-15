@@ -19,13 +19,25 @@ CNN is a type of classifier, neural newtork used to identify patterns in data
     - size of kernel, stride is hyprparameter
     - input -> kernel -> element wise sum along with bias -> activation_map(output) 
 
-    - **padding** - convserve data at border, zero-padding also adopted by AlexNet
+    - **padding** 
+        - convolutional operation discard few pixel which may accumulate to affect spatial integrity
+        - convserve data at border, zero-padding also adopted by AlexNet,
+        - No padding -(P > 0)no extra pixels added but padding adjusted using stride = 1, output = input
+        - Valid Padding (no padding) - output feature map smaller after convolution
+
     - **kernel size** - filter size, appropriate size depends on size and dataset 
     - **stride** - step size, impact similar to kernel size 
     - **activation fn**  
         - max(0, x)ReLu - Rectified linear activation function
         - applies non-linearity (emperical observation: cnn using relu are faster)
         - avoids vanishing gradients.
+        - **Dying Relu Problem**: large no. of neurons output zero for all inputs
+        - sol: **Leaky Relu**- f (z) = max(α(z), z) : where α is hyperparameter and set to 0.01 usually
+        - why not sigmoid (vanishing gradient)
+        - As z → ∞, σ(z) approaches 1, leading to:
+            - σ ′ (z) = σ(z) · (1 − σ(z)) ⇒ 1 · (1 − 1) = 0
+            - z → -∞, σ ′ (z) = σ(z) · (1 − σ(z)) ⇒ 0 · (1 − 0) =
+
     - **softmax**
         - CNN outputs sums to 1
         - outputs to probabilities
