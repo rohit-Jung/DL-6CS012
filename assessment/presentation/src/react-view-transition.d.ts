@@ -6,3 +6,5 @@ declare module "react" {
 	// Marks the next render with a transition type (mapped in <ViewTransition default={...} />).
 	export function addTransitionType(type: string): void;
 }
+
+export {};

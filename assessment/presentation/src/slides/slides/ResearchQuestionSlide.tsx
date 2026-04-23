@@ -1,73 +1,57 @@
+import { useEffect } from "react";
 import type { SlideProps } from "../engine";
 
+const categories = [
+	"SpeedLimit",
+	"Direction",
+	"No Entry",
+	"Crossings",
+	"Cautions",
+];
+
 export function ResearchQuestionSlide({ onSlideMount }: SlideProps) {
-	onSlideMount?.(1);
+	useEffect(() => {
+		onSlideMount?.(1);
+	}, [onSlideMount]);
 
 	return (
-		<main className="h-full">
-			<section className="grid h-full" style={{ alignContent: "start" }}>
+		<main className="slide">
+			<section className="slide__grid">
 				<div className="col-span-12">
-					<p className="kicker">Research question</p>
+					<p className="kicker">Dataset</p>
 				</div>
-				<div className="col-span-12">
-					<h2 className="title">
-						How effectively can a CNN classify five traffic sign categories from
-						low-resolution road images?
-					</h2>
-				</div>
-				<div className="col-span-12 sm:col-span-8">
-					<p className="lede">
-						Which training choices most improve robustness under class
-						imbalance, corrupted files, and uneven lighting?
-					</p>
-				</div>
-				<div className="col-span-12 sm:col-span-4">
-					<div className="panel pad">
-						<div className="micro">Navigation tie-in</div>
-						<div
-							style={{
-								marginTop: 10,
-								fontSize: 14,
-								lineHeight: 1.6,
-								color: "var(--muted)",
-							}}
-						>
-							Focus on minority recall to reduce risky decision points.
+
+				<div className="col-span-12 lg:col-span-7">
+					<h2 className="title">How many samples are there?</h2>
+					<div className="mt-8 grid gap-6 sm:grid-cols-2">
+						<div className="stat">
+							<p className="stat__value">16,100</p>
+						</div>
+						<div className="stat">
+							<p className="stat__value">5</p>
 						</div>
 					</div>
 				</div>
-				<div className="col-span-12">
-					<div className="rule" />
-				</div>
-				<div className="col-span-12 sm:col-span-5">
-					<div className="panel pad">
-						<div className="micro">Scope</div>
-						<div
-							style={{
-								marginTop: 10,
-								fontSize: 14,
-								lineHeight: 1.6,
-								color: "var(--muted)",
-							}}
-						>
-							5 classes · low-res inputs · CNN family · robustness emphasis
+
+				<div className="col-span-12 lg:col-span-5 lg:pt-2">
+					<div className="panel panel--box">
+						<div className="micro">Categories</div>
+						<div className="mt-4 space-y-3">
+							{categories.map((category) => (
+								<div
+									key={category}
+									className="border-t border-[var(--rule)] pt-3 text-sm font-medium tracking-[-0.02em] text-[var(--ink)]"
+								>
+									{category}
+								</div>
+							))}
 						</div>
-					</div>
-				</div>
-				<div className="col-span-12 sm:col-span-7">
-					<div className="panel pad">
-						<div className="micro">Signals</div>
-						<div
-							style={{
-								marginTop: 10,
-								fontSize: 14,
-								lineHeight: 1.6,
-								color: "var(--muted)",
-							}}
-						>
-							Per-class recall · corruption removal · brightness-aware
-							augmentation
-						</div>
+						<div className="rule my-4" />
+						<p className="text-sm leading-7 text-[var(--muted)]">
+							One folder is written as <code>DIrection</code> in the notebook
+							and will be normalized to <code>Direction</code> during
+							preprocessing.
+						</p>
 					</div>
 				</div>
 			</section>

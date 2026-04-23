@@ -1,14 +1,14 @@
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import {
+	addTransitionType,
 	type HTMLAttributes,
 	type ReactNode,
-	ViewTransition,
-	addTransitionType,
+	startTransition,
 	useCallback,
 	useEffect,
 	useState,
-	startTransition,
+	ViewTransition,
 } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 
 export type SlideComponent = (props: SlideProps) => ReactNode;
 
@@ -51,7 +51,7 @@ export function Slides({ slides }: { slides: SlideComponent[] }) {
 				if (currentStep < currentSlideTotalSteps - 1) {
 					startTransition(() => {
 						addTransitionType(transitionType);
-						setCurrentStep((s) => s + 1);
+						setCurrentStep((value) => value + 1);
 					});
 					return;
 				}
@@ -71,7 +71,7 @@ export function Slides({ slides }: { slides: SlideComponent[] }) {
 			if (currentStep > 0) {
 				startTransition(() => {
 					addTransitionType(transitionType);
-					setCurrentStep((s) => s - 1);
+					setCurrentStep((value) => value - 1);
 				});
 				return;
 			}
@@ -129,163 +129,33 @@ export function Slides({ slides }: { slides: SlideComponent[] }) {
 					return () => setBusy(false);
 				}}
 			>
-				<div className="deck__frame">
-					<div className="deck__meta" aria-hidden="true">
-						<div className="deck__metaLabel">DECK</div>
-						<div className="deck__metaRule" />
-						<div className="deck__metaValue">
-							<span className="deck__metaMono">
-								{String(current + 1).padStart(2, "0")}
-							</span>
-							<span className="deck__metaMono">/</span>
-							<span className="deck__metaMono">
-								{String(slides.length).padStart(2, "0")}
-							</span>
-						</div>
-						<div className="deck__metaRule" />
-						<div className="deck__metaValue">
-							<span className="deck__metaMono">STEP</span>
-							<span className="deck__metaMono">
-								{String(currentStep + 1).padStart(2, "0")}
-							</span>
-							<span className="deck__metaMono">/</span>
-							<span className="deck__metaMono">
-								{String(currentSlideTotalSteps).padStart(2, "0")}
-							</span>
-						</div>
-					</div>
-
-					<div className="deck__stage">
-						<div className="deck__canvas">
-							<DeckOrnaments />
-							<AnimatePresence mode="wait" initial={false}>
-								<motion.div
-									key={current}
-									className="deck__slide"
-									initial={reducedMotion ? false : { opacity: 0, y: 8 }}
-									animate={
-										reducedMotion ? { opacity: 1 } : { opacity: 1, y: 0 }
-									}
-									exit={reducedMotion ? { opacity: 0 } : { opacity: 0, y: -6 }}
-									transition={
-										reducedMotion
-											? { duration: 0 }
-											: { duration: 0.18, ease: [0.22, 1, 0.36, 1] }
-									}
-								>
-									{ActiveSlide ? (
-										<ActiveSlide
-											currentStep={currentStep}
-											onSlideMount={onSlideMount}
-										/>
-									) : null}
-								</motion.div>
-							</AnimatePresence>
-						</div>
+				<div className="deck__stage">
+					<div className="deck__canvas">
+						<AnimatePresence mode="wait" initial={false}>
+							<motion.div
+								key={current}
+								className="deck__slide"
+								initial={reducedMotion ? false : { opacity: 0, y: 8 }}
+								animate={reducedMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
+								exit={reducedMotion ? { opacity: 0 } : { opacity: 0, y: -6 }}
+								transition={
+									reducedMotion
+										? { duration: 0 }
+										: { duration: 0.18, ease: [0.22, 1, 0.36, 1] }
+								}
+							>
+								{ActiveSlide ? (
+									<ActiveSlide
+										currentStep={currentStep}
+										onSlideMount={onSlideMount}
+									/>
+								) : null}
+							</motion.div>
+						</AnimatePresence>
 					</div>
 				</div>
 			</ViewTransition>
 		</section>
-	);
-}
-
-function DeckOrnaments() {
-	const reduced = useReducedMotion();
-
-	return (
-		<div className="deck__ornaments" aria-hidden="true">
-			<motion.svg
-				className="deck__ornament deck__ornament--ring"
-				viewBox="0 0 100 100"
-				fill="none"
-				animate={
-					reduced
-						? undefined
-						: {
-								x: [0, -8, 0],
-								y: [0, 6, 0],
-								rotate: [0, 8, 0],
-							}
-				}
-				transition={
-					reduced
-						? undefined
-						: {
-								duration: 12,
-								repeat: Number.POSITIVE_INFINITY,
-								ease: "easeInOut",
-							}
-				}
-			>
-				<circle cx="50" cy="50" r="32" stroke="var(--rule)" strokeWidth="1" />
-				<circle
-					cx="50"
-					cy="50"
-					r="18"
-					stroke="var(--accent)"
-					strokeWidth="1"
-					opacity="0.55"
-				/>
-			</motion.svg>
-
-			<motion.svg
-				className="deck__ornament deck__ornament--kite"
-				viewBox="0 0 120 120"
-				fill="none"
-				animate={reduced ? undefined : { y: [0, -7, 0], rotate: [0, -4, 0] }}
-				transition={
-					reduced
-						? undefined
-						: {
-								duration: 10,
-								repeat: Number.POSITIVE_INFINITY,
-								ease: "easeInOut",
-							}
-				}
-			>
-				<path
-					d="M60 18 L96 58 L60 102 L24 58 Z"
-					stroke="var(--rule)"
-					strokeWidth="1"
-				/>
-				<path
-					d="M60 18 L60 102"
-					stroke="var(--accent)"
-					strokeWidth="1"
-					opacity="0.55"
-				/>
-			</motion.svg>
-
-			<motion.svg
-				className="deck__ornament deck__ornament--ticks"
-				viewBox="0 0 180 60"
-				fill="none"
-				animate={reduced ? undefined : { x: [0, 10, 0] }}
-				transition={
-					reduced
-						? undefined
-						: {
-								duration: 14,
-								repeat: Number.POSITIVE_INFINITY,
-								ease: "easeInOut",
-							}
-				}
-			>
-				{Array.from({ length: 10 }).map((_, i) => {
-					const x = 10 + i * 16;
-					const h = i % 3 === 0 ? 18 : 10;
-					return (
-						<path
-							key={String(i)}
-							d={`M${x} ${50} V${50 - h}`}
-							stroke="var(--rule)"
-							strokeWidth="1"
-							opacity={i % 3 === 0 ? 0.5 : 0.28}
-						/>
-					);
-				})}
-			</motion.svg>
-		</div>
 	);
 }
 

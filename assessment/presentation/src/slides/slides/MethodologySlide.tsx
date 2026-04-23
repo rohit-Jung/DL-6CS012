@@ -1,94 +1,155 @@
-import type { SlideProps } from "../engine"
-import { StepSwitch } from "../ui"
+import { useEffect } from "react";
+import type { SlideProps } from "../engine";
+import { StepSwitch } from "../ui";
 
 export function MethodologySlide({ currentStep, onSlideMount }: SlideProps) {
-	onSlideMount?.(2)
+	useEffect(() => {
+		onSlideMount?.(4);
+	}, [onSlideMount]);
 
 	return (
-		<main className="h-full">
-			<section className="grid h-full" style={{ alignContent: "start" }}>
+		<main className="slide">
+			<section className="slide__grid">
 				<div className="col-span-12">
-					<p className="kicker">Methodology</p>
+					<p className="kicker">Dataset problems</p>
 				</div>
-				<div className="col-span-12 sm:col-span-8">
-					<h2 className="title">Training pipeline + model comparison.</h2>
-					<p className="lede" style={{ marginTop: 12 }}>
-						Audit first. Standardize inputs. Compare three model families with per-class metrics.
+
+				<div className="col-span-12 lg:col-span-8">
+					<h2 className="title">
+						Clean the data, then augment for robustness.
+					</h2>
+					<p className="lede mt-6 max-w-3xl">
+						We fix integrity and normalization issues first, then use
+						training-time augmentation to simulate real road variation.
 					</p>
 				</div>
-				<div className="col-span-12">
+
+				<div className="col-span-12 self-end">
 					<div className="rule" />
 				</div>
 
-				<div className="col-span-12 sm:col-span-8">
-					<StepSwitch step={currentStep}>
-						{
-							[
-								<div key="pipe" className="panel pad">
-									<div className="micro">Pipeline</div>
-									<div className="grid" style={{ marginTop: 12, gap: 12 }}>
-										<div className="col-span-12 sm:col-span-6">
-											<div className="micro">Preprocess</div>
-											<ul style={{ marginTop: 10, paddingLeft: 18, color: "var(--muted)", lineHeight: 1.7, fontSize: 14 }}>
-												<li>Remove corrupted files (log removals).</li>
-												<li>Normalize labels: DIrection → Direction.</li>
-												<li>Resize to 48x48; normalize pixel values.</li>
-											</ul>
+				<div className="col-span-12">
+					<StepSwitch step={currentStep} className="grid grid-cols-12 gap-8">
+						{[
+							<div key="corrupt" className="col-span-12 flex justify-center">
+								<div className="w-full max-w-6xl">
+									<img
+										src="/slides/corrupt.png"
+										alt="Corrupted files found during audit"
+										className="figure mx-auto max-h-[70dvh] w-auto max-w-full object-contain"
+									/>
+									<p className="caption mt-3 text-center">
+										35 corrupted files found during audit
+									</p>
+								</div>
+							</div>,
+							<div
+								key="rgb"
+								className="col-span-12 lg:col-span-8 lg:col-start-3"
+							>
+								<div className="panel panel--box text-center">
+									<div className="mt-8 grid gap-6 md:grid-cols-3">
+										{[
+											["R", "77"],
+											["G", "71"],
+											["B", "75"],
+										].map(([channel, value]) => (
+											<div
+												key={channel}
+												className="stat mx-auto w-full max-w-[12rem]"
+											>
+												<p className="stat__value break-keep text-center">
+													{value}
+												</p>
+												<p className="stat__label mt-3 text-center">
+													{channel}
+												</p>
+											</div>
+										))}
+									</div>
+									<div className="rule my-6" />
+									<p className="mx-auto max-w-2xl text-[18px] leading-[1.6] text-[var(--muted)]">
+										The profile is dark overall, so normalization and
+										brightness-aware augmentation are justified.
+									</p>
+								</div>
+							</div>,
+							<div
+								key="imbalance"
+								className="col-span-12 lg:col-span-8 lg:col-start-3"
+							>
+								<div className="panel panel--box">
+									<div className="micro">Class imbalance</div>
+									<div className="mt-8 grid gap-8 md:grid-cols-[minmax(0,12rem)_1fr] md:items-start">
+										<div className="stat">
+											<p className="stat__value">4:1</p>
 										</div>
-										<div className="col-span-12 sm:col-span-6">
-											<div className="micro">Augment</div>
-											<ul style={{ marginTop: 10, paddingLeft: 18, color: "var(--muted)", lineHeight: 1.7, fontSize: 14 }}>
-												<li>Rotation/translation/zoom/shear.</li>
-												<li>Brightness/contrast for uneven lighting.</li>
-												<li>Balanced sampling for minority classes.</li>
-											</ul>
+										<div className="space-y-4 text-[18px] leading-[1.6] text-[var(--muted)]">
+											<div className="border-t border-[var(--rule)] pt-4">
+												SpeedLimit is far ahead of Cautions.
+											</div>
+											<div className="border-t border-[var(--rule)] pt-4">
+												Minority recall will be the fragile point.
+											</div>
 										</div>
 									</div>
-								</div>,
-								<div key="models" className="panel pad">
-									<div className="micro">Models to compare</div>
-									<div className="grid" style={{ marginTop: 12, gap: 12 }}>
+								</div>
+							</div>,
+							<div
+								key="augment"
+								className="col-span-12 lg:col-span-10 lg:col-start-2"
+							>
+								<div className="panel panel--box">
+									<div className="micro">Augmentation plan (train only)</div>
+									<div className="mt-6 grid gap-4 md:grid-cols-2">
 										{[
+											["RandomFlip", "horizontal, p = 0.5"],
+											["RandomRotation", "+/- 15 deg (factor = 0.04)"],
 											[
-												"Baseline CNN",
-												"3x3 conv stacks + max pool + dense + 5-class softmax.",
+												"RandomTranslation",
+												"+/- 10% (height_factor = 0.10, width_factor = 0.10)",
 											],
 											[
-												"Regularized CNN",
-												"Batch norm + dropout (0.3–0.5) to stabilize and reduce overfit.",
+												"RandomZoom",
+												"0.9-1.1 (height/width factor = (-0.10, 0.10))",
 											],
+											["RandomContrast", "+/- 20% (factor = 0.20)"],
+											["RandomBrightness", "+/- 15% (factor = 0.15)"],
 											[
-												"Transfer learning",
-												"Fine-tune MobileNetV2 / ResNet to test pretrained features vs from-scratch.",
+												"Cutout / RandomErasing",
+												"p = 0.5, 1 patch, area = 8-20%, aspect = 0.3-3.3, fill = 0",
 											],
-										].map(([h, d]) => (
-											<div key={h} className="col-span-12 sm:col-span-4">
-												<div className="micro" style={{ color: "var(--ink)" }}>
-													{h}
+										].map(([name, params]) => (
+											<div
+												key={name}
+												className="rounded-xl border border-[var(--rule)] bg-[rgba(255,255,255,0.02)] p-4"
+											>
+												<div className="text-sm font-medium text-[var(--ink)]">
+													{name}
 												</div>
-												<div style={{ marginTop: 10, color: "var(--muted)", lineHeight: 1.7, fontSize: 14 }}>
-													{d}
+												<div className="mt-2 text-[16px] leading-[1.55] text-[var(--muted)]">
+													{params}
 												</div>
 											</div>
 										))}
 									</div>
-								</div>,
-							] as any
-						}
+									<div className="rule my-6" />
+									<div className="space-y-2 text-[18px] leading-[1.6] text-[var(--muted)]">
+											<p>
+												Applied sequentially per image (Flip -> Rotate -> Translate
+												-> Zoom -> Contrast/Brightness -> Cutout).
+											</p>
+										<p>
+											Validation and test use deterministic resize +
+											normalization only.
+										</p>
+									</div>
+								</div>
+							</div>,
+						]}
 					</StepSwitch>
-				</div>
-
-				<div className="col-span-12 sm:col-span-4">
-					<div className="panel pad">
-						<div className="micro">Evaluation</div>
-						<ul style={{ marginTop: 12, paddingLeft: 18, color: "var(--muted)", lineHeight: 1.7, fontSize: 14 }}>
-							<li>Per-class precision/recall + confusion matrix.</li>
-							<li>Prioritize minority recall (Crossings/Cautions).</li>
-							<li>Track failure modes under low light and small scale.</li>
-						</ul>
-					</div>
 				</div>
 			</section>
 		</main>
-	)
+	);
 }

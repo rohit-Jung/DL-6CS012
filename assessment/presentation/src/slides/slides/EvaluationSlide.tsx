@@ -1,22 +1,26 @@
 import { useEffect } from "react";
 import type { SlideProps } from "../engine";
 
-const fixes = [
+const checks = [
 	[
-		"Sample size imbalance",
-		"Use class-weighted loss, balanced mini-batches, and targeted augmentation for minority classes.",
+		"Training curves",
+		"Show loss and accuracy across epochs for the baseline, deeper model, and transfer model.",
 	],
 	[
-		"Dark color profile",
-		"Normalize pixel values and add brightness- or contrast-aware augmentation.",
+		"Core metrics",
+		"Report accuracy, precision, recall, and F1 instead of accuracy alone.",
 	],
 	[
-		"Corrupt images",
-		"Scan the dataset first, remove unreadable files, and log every deletion before training.",
+		"Error analysis",
+		"Use confusion matrices and sample predictions to show where each model fails.",
+	],
+	[
+		"Comparison",
+		"Discuss generalization, overfitting, optimizer choice, ablations, and training cost.",
 	],
 ] as const;
 
-export function ImbalanceHandlingSlide({ onSlideMount }: SlideProps) {
+export function EvaluationSlide({ onSlideMount }: SlideProps) {
 	useEffect(() => {
 		onSlideMount?.(1);
 	}, [onSlideMount]);
@@ -25,13 +29,13 @@ export function ImbalanceHandlingSlide({ onSlideMount }: SlideProps) {
 		<main className="slide">
 			<section className="slide__grid">
 				<div className="col-span-12">
-					<p className="kicker">How to fix the problems</p>
+					<p className="kicker">How to evaluate it</p>
 				</div>
 
 				<div className="col-span-12 lg:col-span-8">
-					<h2 className="title">Fix the data pipeline before the model.</h2>
+					<h2 className="title">Measure learning, robustness, and cost.</h2>
 					<p className="lede mt-6 max-w-3xl">
-						The main corrections happen before training starts.
+						The comparison matters as much as the final score.
 					</p>
 				</div>
 
@@ -41,7 +45,7 @@ export function ImbalanceHandlingSlide({ onSlideMount }: SlideProps) {
 
 				<div className="col-span-12">
 					<div className="timeline">
-						{fixes.map(([title, text], index) => (
+						{checks.map(([title, text], index) => (
 							<div key={title} className="timeline__item">
 								<div className="timeline__index">0{index + 1}</div>
 								<h3 className="timeline__title">{title}</h3>
