@@ -1,5 +1,3 @@
-# msc/
-
 .venv/
 venv/
 __pycache__/
@@ -13,3 +11,5 @@ dataset/
 model_checkpoints/
 
 .ipynb_checkpoints
+msc/
+.vscode
