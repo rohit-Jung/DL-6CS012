@@ -1,0 +1,24 @@
+services:
+  tf-gpu:
+    build: .
+    container_name: tf-gpu
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./:/workspace
+    working_dir: /workspace
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+    command: >
+      jupyter notebook --ip=0.0.0.0 --port=8888
+      --allow-root --no-browser --NotebookApp.token=''
+      --MappingKernelManager.cull_idle_timeout=300
+      --MappingKernelManager.cull_interval=60

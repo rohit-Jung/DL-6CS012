@@ -1,0 +1,25 @@
+msc/
+
+.venv/
+venv/
+__pycache__/
+.ruff_*/
+*.md
+!notes/*.md
+!README.md
+dataset/
+
+# do we need this idk
+model_checkpoints/
+
+node_modules
+
+data
+datasets
+
+*.h5
+*.ckpt
+*.pt
+*.pth
+
+.ipynb_checkpoints
