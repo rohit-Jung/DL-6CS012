@@ -11,10 +11,10 @@ dataset/
 model_checkpoints/
 
 .ipynb_checkpoints
-# msc/
 assignment-format.typ
 images/
 node_modules/
 .vscode
 models/
 *.keras
+msc/
